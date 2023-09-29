@@ -1,6 +1,6 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import Comment from "@/components/forms/Comment";
-import { fetchThreadById } from "@/lib/actions/thread.actions";
+import { fetchThreadById } from "@/lib/actions/tweet.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -14,33 +14,33 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onboarded) redirect("/onboarding");
 
-  const thread = await fetchThreadById(params.id);
+  const tweet = await fetchThreadById(params.id);
 
   return (
     <section className="relative ">
       <div>
         <ThreadCard
-          key={thread._id}
-          id={thread._id}
+          key={tweet._id}
+          id={tweet._id}
           currentUserId={user?.id || ""}
-          parentId={thread.parentId}
-          content={thread.text}
-          author={thread.author}
-          community={thread.community}
-          createdAt={thread.createdAt}
-          comments={thread.children}
+          parentId={tweet.parentId}
+          content={tweet.text}
+          author={tweet.author}
+          community={tweet.community}
+          createdAt={tweet.createdAt}
+          comments={tweet.children}
         />
       </div>
       <div className="mt-7 ">
         <Comment
-          threadId={thread.id}
+          threadId={tweet.id}
           currentUserImg={userInfo.image}
           currentUserId={JSON.stringify(userInfo._id)}
         />
       </div>
 
       <div className="mt-10">
-        {thread.children.map((childItem: any) => (
+        {tweet.children.map((childItem: any) => (
           <ThreadCard
             key={childItem._id}
             id={childItem._id}

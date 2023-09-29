@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { usePathname, useRouter } from "next/navigation";
 // import { updateUser } from "@/lib/actions/user.actions";
-import { CommentValidation } from "@/lib/validations/thread";
-import { addCommentToThread, createThread } from "@/lib/actions/thread.actions";
+import { CommentValidation } from "@/lib/validations/tweet";
+import { addCommentToThread, createThread } from "@/lib/actions/tweet.actions";
 import Image from "next/image";
 
 interface Props {
@@ -33,14 +33,14 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
-      thread: "",
+      tweet: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
     await addCommentToThread(
       threadId,
-      values.thread,
+      values.tweet,
       JSON.parse(currentUserId),
       pathname
     );
@@ -54,7 +54,7 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className=" comment-form ">
           <FormField
             control={form.control}
-            name="thread"
+            name="tweet"
             render={({ field }) => (
               <FormItem className="flex items-center gap-3 w-full">
                 <FormLabel>

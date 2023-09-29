@@ -21,11 +21,11 @@ const threadSchema = new mongoose.Schema({
   children: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Thread",
+      ref: "Tweet",
     },
   ],
 });
 
-const Thread = mongoose.models.Thread || mongoose.model("Thread", threadSchema);
+const Tweet = mongoose.models.Tweet || mongoose.model("Tweet", threadSchema);
 
-export default Thread;
+export default Tweet;

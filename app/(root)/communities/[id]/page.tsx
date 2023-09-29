@@ -27,7 +27,7 @@ async function Page({ params }: { params: { id: string } }) {
       />
 
       <div className="mt-9">
-        <Tabs defaultValue="threads" className="w-full">
+        <Tabs defaultValue="tweets" className="w-full">
           <TabsList className="tab">
             {communityTabs.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.value} className="tab">
@@ -40,16 +40,16 @@ async function Page({ params }: { params: { id: string } }) {
                 />
                 <p className="max-sm:hidden">{tab.label}</p>
 
-                {tab.label === "Threads" && (
+                {tab.label === "X" && (
                   <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
-                    {communityDetails?.threads?.length}
+                    {communityDetails?.tweets?.length}
                   </p>
                 )}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          <TabsContent value="threads" className="w-full text-light-1">
+          <TabsContent value="tweets" className="w-full text-light-1">
             <ThreadsTab
               currentUserId={user.id}
               accountId={communityDetails._id}

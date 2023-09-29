@@ -4,7 +4,7 @@ import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
 
 import Community from "../models/community.model";
-import Thread from "../models/thread.model";
+import Tweet from "../models/tweet.model";
 import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
@@ -66,10 +66,10 @@ export async function fetchUserPosts(userId: string) {
   try {
     connectToDB();
 
-    // Find all threads authored by the user with the given userId
-    const threads = await User.findOne({ id: userId }).populate({
-      path: "threads",
-      model: Thread,
+    // Find all tweets authored by the user with the given userId
+    const tweets = await User.findOne({ id: userId }).populate({
+      path: "tweets",
+      model: Tweet,
       populate: [
         {
           path: "community",
@@ -78,7 +78,7 @@ export async function fetchUserPosts(userId: string) {
         },
         {
           path: "children",
-          model: Thread,
+          model: Tweet,
           populate: {
             path: "author",
             model: User,
@@ -87,9 +87,9 @@ export async function fetchUserPosts(userId: string) {
         },
       ],
     });
-    return threads;
+    return tweets;
   } catch (error) {
-    console.error("Error fetching user threads:", error);
+    console.error("Error fetching user tweets:", error);
     throw error;
   }
 }
@@ -157,18 +157,18 @@ export async function getActivity(userId: string) {
   try {
     connectToDB();
 
-    // Find all threads created by the user
-    const userThreads = await Thread.find({ author: userId });
+    // Find all tweets created by the user
+    const userThreads = await Tweet.find({ author: userId });
 
-    // Collect all the child thread ids (replies) from the 'children' field of each user thread
+    // Collect all the child tweet ids (replies) from the 'children' field of each user tweet
     const childThreadIds = userThreads.reduce((acc, userThread) => {
       return acc.concat(userThread.children);
     }, []);
 
-    // Find and return the child threads (replies) excluding the ones created by the same user
-    const replies = await Thread.find({
+    // Find and return the child tweets (replies) excluding the ones created by the same user
+    const replies = await Tweet.find({
       _id: { $in: childThreadIds },
-      author: { $ne: userId }, // Exclude threads authored by the same user
+      author: { $ne: userId }, // Exclude tweets authored by the same user
     }).populate({
       path: "author",
       model: User,

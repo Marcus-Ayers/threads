@@ -9,7 +9,7 @@ interface Result {
   name: string;
   image: string;
   id: string;
-  threads: {
+  tweets: {
     _id: string;
     text: string;
     parentId: string | null;
@@ -53,29 +53,29 @@ async function ThreadsTab({ currentUserId, accountId, accountType }: Props) {
 
   return (
     <section className="mt-9 flex flex-col gap-10">
-      {result.threads.map((thread) => (
+      {result.tweets.map((tweet) => (
         <ThreadCard
-          key={thread._id}
-          id={thread._id}
+          key={tweet._id}
+          id={tweet._id}
           currentUserId={currentUserId}
-          parentId={thread.parentId}
-          content={thread.text}
+          parentId={tweet.parentId}
+          content={tweet.text}
           author={
             accountType === "User"
               ? { name: result.name, image: result.image, id: result.id }
               : {
-                  name: thread.author.name,
-                  image: thread.author.image,
-                  id: thread.author.id,
+                  name: tweet.author.name,
+                  image: tweet.author.image,
+                  id: tweet.author.id,
                 }
           }
           community={
             accountType === "Community"
               ? { name: result.name, id: result.id, image: result.image }
-              : thread.community
+              : tweet.community
           }
-          createdAt={thread.createdAt}
-          comments={thread.children}
+          createdAt={tweet.createdAt}
+          comments={tweet.children}
         />
       ))}
     </section>

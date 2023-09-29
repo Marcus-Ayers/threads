@@ -24,7 +24,9 @@ function Leftsidebar() {
             <Link
               href={link.route}
               key={link.label}
-              className={`leftsidebar_link ${isActive && "bg-primary-500"}`}
+              className={`leftsidebar_link hover:bg-[#44444552] ${
+                isActive && "bg-primary-500 hover:bg-primary-600"
+              }`}
             >
               <Image
                 src={link.imgURL}

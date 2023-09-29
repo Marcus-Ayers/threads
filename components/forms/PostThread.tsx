@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { usePathname, useRouter } from "next/navigation";
 // import { updateUser } from "@/lib/actions/user.actions";
-import { ThreadValidation } from "@/lib/validations/thread";
-import { createThread } from "@/lib/actions/thread.actions";
+import { ThreadValidation } from "@/lib/validations/tweet";
+import { createThread } from "@/lib/actions/tweet.actions";
 import { useOrganization } from "@clerk/nextjs";
 
 interface Props {
@@ -40,14 +40,14 @@ function PostThread({ userId }: { userId: string }) {
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
-      thread: "",
+      tweet: "",
       accountId: userId,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
     await createThread({
-      text: values.thread,
+      text: values.tweet,
       author: userId,
       communityId: organization ? organization.id : null,
       path: pathname,
@@ -65,7 +65,7 @@ function PostThread({ userId }: { userId: string }) {
         >
           <FormField
             control={form.control}
-            name="thread"
+            name="tweet"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-3 w-full">
                 <FormLabel className="text-base-semibold text-light-2 ">
@@ -80,7 +80,7 @@ function PostThread({ userId }: { userId: string }) {
           />
 
           <Button type="submit" className="bg-primary-500">
-            Post Thread
+            Post Tweet
           </Button>
         </form>
       </Form>
